@@ -1,0 +1,25 @@
+Penitentiary Gothic Fill
+
+sudo apt-get install libicu-dev
+sudo apt-get install libpango1.0-dev
+sudo apt-get install libcairo2-dev
+
+training/text2image --text=training_text.txt --outputbase=eng.PenitentiaryGothicFill.exp0 --font='Penitentiary Gothic Fill' --fonts_dir=/home/akshit/Desktop/cv/training_font/
+
+eng.PenitentiaryGothicFill.exp0
+
+tesseract eng.PenitentiaryGothicFill.exp0.tif eng.PenitentiaryGothicFill.exp0 batch.nochop makebox
+
+sudo tesseract eng.PenitentiaryGothicFill.exp0.tif eng.PenitentiaryGothicFill.exp0 box.train
+
+unicharset_extractor  eng.PenitentiaryGothicFill.exp0.
+
+echo "UnknownFont 0 0 0 0 " > font_properties
+
+mftraining -F font_properties -U unicharset -O eng.unicharset eng.PenitentiaryGothicFill.exp0.tr
+
+cntraining eng.PenitentiaryGothicFill.exp0.tr
+
+mv normproto eng.normproto; mv inttemp eng.inttemp; mv pffmtable eng.pffmtable; mv shapetable eng.shapetable
+
+combine_tessdata eng.
